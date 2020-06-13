@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Analog clock</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    
+    
+  </head>
+
+  <body>
+      
+      <canvas id="clock" width="500" height="500">
+      
+      Please upgrade your browser.
+      </canvas>
+    
+      
+      <script>
+          
+          function setTime() {
+      
+        var canvas = document.getElementById("clock");
+        var context = canvas.getContext("2d");
+        var clockRadius = canvas.width/2;
+        
+        //draw the clock circle   
+          context.beginPath();
+          
+          context.fillStyle = "#ff6666";
+          context.arc(clockRadius, clockRadius, clockRadius, 0, 2*Math.PI);
+          context.fill();
+          
+          //get the numbers on the clock
+          context.fillStyle = "#333300"; //color for the inner circle
+          
+          context.beginPath();
+          context.arc(clockRadius, clockRadius, 10, 0, 2*Math.PI); //describe the middle circle here ie the 10
+          context.fill();
+          
+          context.font = clockRadius / 10 + "px arial";
+          context.textAlign = "center";
+          context.textBaseline = "middle";
+
+          
+          var textGradient = context.createLinearGradient(200, 50, 300, 50);
+          
+          textGradient.addColorStop(0, "black");
+          textGradient.addColorStop(1, "yellow");
+          
+          context.fillStyle = textGradient;
+          context.font= "20px Verdana";
+          context.fillText("Ben's Clock", 250, 200);
+         // context.lineWidth= 3;
+          context.strokeStyle = textGradient;
+          context.strokeText("Quality watch", 250, 280);
+
+          
+          for (var i = 1; i <= 12; i++) {
+              
+              context.fillText(i, clockRadius + clockRadius * 0.9 * Math.sin(i * 2*Math.PI / 12), clockRadius - (clockRadius * 0.9 * Math.cos(i * 2 * Math.PI / 12)));
+              
+          }
+          
+          //get the hands of the clock
+          var hours = new Date().getHours();
+          var minutes = new Date().getMinutes();
+          var seconds = new Date().getSeconds();
+          
+          var fullHours = hours % 12 + minutes / 60 + seconds / 3600;
+          
+          var hoursAngle = fullHours * 2 * Math.PI / 12;
+          var minutesAngle = minutes * 2 * Math.PI / 60;
+          var secondsAngle = seconds * 2 * Math.PI / 60;
+          
+          context.strokeStyle = "#333300"; //color for the hands
+          //hours hand
+          context.moveTo(clockRadius, clockRadius);
+          context.lineTo(clockRadius + clockRadius * 0.6 * Math.sin(hoursAngle), clockRadius - (clockRadius * 0.6 * Math.cos(hoursAngle)));
+          context.lineWidth = 5;
+          context.stroke();    
+          
+          //minutes hand
+          context.moveTo(clockRadius, clockRadius);
+          context.lineTo(clockRadius + clockRadius * 0.8 * Math.sin(minutesAngle), clockRadius - (clockRadius * 0.8 * Math.cos(minutesAngle)));
+          context.lineWidth = 3;
+          context.stroke(); 
+          
+          //seconds hand
+          context.moveTo(clockRadius, clockRadius);
+          context.lineTo(clockRadius + clockRadius * 0.9 * Math.sin(secondsAngle), clockRadius - (clockRadius * 0.9 * Math.cos(secondsAngle)));
+          context.lineWidth = 2;
+          context.stroke(); 
+
+          
+      
+          }
+          
+          //to call it every second, instead of a refresh
+          setInterval(setTime, 1000);
+
+          
+      </script>
+      
+  </body>
+    
+    
+</html>
